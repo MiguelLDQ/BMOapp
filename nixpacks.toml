@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["cd bmo-backend && npm install"]
+
+[phases.build]
+cmds = ["cd bmo-backend && npm run build && cd bmo-backend && npx prisma generate"]
+
+[start]
+cmd = "cd bmo-backend && npx prisma migrate deploy && node dist/main"

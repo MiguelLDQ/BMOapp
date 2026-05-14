@@ -14,7 +14,7 @@ RUN npx prisma generate
 
 RUN npm run build
 
-COPY bmo-backend/start.sh ./start.sh
+COPY start.sh ./start.sh
 RUN chmod +x start.sh
 
 EXPOSE 3000

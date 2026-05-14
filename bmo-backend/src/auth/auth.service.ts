@@ -16,6 +16,7 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
+  try {
     const exists = await (this.prisma as any).user.findUnique({ where: { email: dto.email } });
     if (exists) throw new ConflictException('Email já cadastrado');
 
@@ -27,7 +28,11 @@ export class AuthService {
 
     const token = this.jwt.sign({ sub: user.id, email: user.email });
     return { user, token };
+  } catch (error) {
+    console.error('REGISTER ERROR:', error);
+    throw error;
   }
+}
 
   async login(dto: LoginDto) {
     const user = await (this.prisma as any).user.findUnique({ where: { email: dto.email } });

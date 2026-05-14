@@ -2,11 +2,11 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY bmo-backend/package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY bmo-backend/ .
 
 RUN npx prisma generate
 

@@ -14,6 +14,9 @@ RUN npx prisma generate
 
 RUN npm run build
 
+COPY bmo-backend/start.sh ./start.sh
+RUN chmod +x start.sh
+
 EXPOSE 3000
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main"]
+CMD ["sh", "start.sh"]

@@ -1,20 +1,34 @@
-FROM node:20-alpine
+# Stage 1 — Build
+FROM node:20-alpine AS builder
 
 RUN apk add --no-cache openssl python3 make g++
 
 WORKDIR /app
 
 COPY package*.json ./
-
 RUN npm install
 
 COPY . .
 
 RUN npx prisma generate
-
 RUN ./node_modules/.bin/nest build
 
-RUN echo "=== CONTEUDO DO APP ===" && ls -la /app/ && echo "=== PROCURANDO DIST ===" && find / -name "main.js" -not -path "*/node_modules/*" 2>/dev/null
+# Stage 2 — Runtime
+FROM node:20-alpine AS runner
+
+RUN apk add --no-cache openssl
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install --omit=dev
+
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
+COPY prisma ./prisma
+COPY start.sh ./start.sh
+RUN chmod +x start.sh
 
 EXPOSE 3000
 

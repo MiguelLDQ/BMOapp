@@ -10,6 +10,9 @@ async function bootstrap() {
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
+  // Adiciona suporte a urlencoded
+  app.useBodyParser('urlencoded', { extended: true });
+
   app.setGlobalPrefix('api/v1');
 
   const port = process.env.PORT || 3000;

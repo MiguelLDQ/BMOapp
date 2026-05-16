@@ -12,9 +12,9 @@ COPY . .
 
 RUN npx prisma generate
 
-RUN ./node_modules/.bin/nest build
+RUN ./node_modules/.bin/nest build 2>&1 || (echo "NEST BUILD FAILED" && cat tsconfig.json && exit 1)
 
-RUN echo "=== dist gerado ===" && ls -la /app/dist/
+RUN ls -la dist/ || echo "DIST NAO EXISTE"
 
 EXPOSE 3000
 

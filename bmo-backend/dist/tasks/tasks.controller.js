@@ -23,6 +23,10 @@ let TasksController = class TasksController {
     constructor(tasksService) {
         this.tasksService = tasksService;
     }
+    async generateDaily(userId) {
+        const data = await this.tasksService.generateDaily(userId);
+        return { success: true, message: '6 tasks do dia geradas!', data };
+    }
     async create(userId, dto) {
         const data = await this.tasksService.create(userId, dto);
         return { success: true, message: 'Tarefa criada', data };
@@ -49,6 +53,13 @@ let TasksController = class TasksController {
     }
 };
 exports.TasksController = TasksController;
+__decorate([
+    (0, common_1.Post)('daily'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], TasksController.prototype, "generateDaily", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, current_user_decorator_1.CurrentUser)('id')),

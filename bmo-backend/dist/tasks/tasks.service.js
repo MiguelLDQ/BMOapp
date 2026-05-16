@@ -68,6 +68,33 @@ let TasksService = class TasksService {
         ]);
         return { total, pending, inProgress, done };
     }
+    async generateDaily(userId) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const existing = await this.prisma.task.findMany({
+            where: {
+                userId,
+                createdAt: { gte: today, lt: tomorrow },
+                description: 'daily',
+            },
+        });
+        if (existing.length > 0) {
+            return existing;
+        }
+        const allDaily = await this.prisma.dailyTask.findMany();
+        const shuffled = allDaily.sort(() => Math.random() - 0.5).slice(0, 6);
+        const created = await Promise.all(shuffled.map((t) => this.prisma.task.create({
+            data: {
+                userId,
+                title: t.title,
+                description: 'daily',
+                dueDate: tomorrow,
+            },
+        })));
+        return created;
+    }
 };
 exports.TasksService = TasksService;
 exports.TasksService = TasksService = __decorate([

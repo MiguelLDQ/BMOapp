@@ -16,4 +16,5 @@ export declare class TasksService {
         inProgress: any;
         done: any;
     }>;
+    generateDaily(userId: string): Promise<any>;
 }

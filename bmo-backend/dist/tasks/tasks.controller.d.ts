@@ -3,6 +3,11 @@ import { CreateTaskDto, UpdateTaskDto } from './tasks.dto';
 export declare class TasksController {
     private tasksService;
     constructor(tasksService: TasksService);
+    generateDaily(userId: string): Promise<{
+        success: boolean;
+        message: string;
+        data: any;
+    }>;
     create(userId: string, dto: CreateTaskDto): Promise<{
         success: boolean;
         message: string;

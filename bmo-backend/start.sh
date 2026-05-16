@@ -1,4 +1,11 @@
 #!/bin/sh
+set -e
+
+echo "=== listando dist ==="
 ls /app/dist
-npx prisma migrate deploy
-node dist/main
+
+echo "=== rodando prisma migrate ==="
+npx prisma migrate deploy 2>&1
+
+echo "=== subindo app ==="
+node dist/main 2>&1

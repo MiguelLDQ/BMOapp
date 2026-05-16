@@ -11,9 +11,8 @@ export default () => ({
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   },
 
-  ollama: {
-    url: process.env.OLLAMA_URL || 'http://localhost:11434',
-    model: process.env.OLLAMA_MODEL || 'llama3',
+  groq: {
+    apiKey: process.env.GROQ_API_KEY || '',
   },
 
   firebase: {

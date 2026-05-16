@@ -14,6 +14,8 @@ RUN npx prisma generate
 
 RUN npm run build
 
+RUN ls -la dist/
+
 EXPOSE 3000
 
 CMD ["sh", "start.sh"]

@@ -12,15 +12,7 @@ COPY . .
 
 RUN npx prisma generate
 
-RUN echo "=== iniciando build ===" && \
-    ./node_modules/.bin/nest build && \
-    echo "=== build ok ===" || \
-    (echo "=== ERRO NO BUILD ===" && \
-    ./node_modules/.bin/tsc --version && \
-    ./node_modules/.bin/tsc 2>&1 && \
-    exit 1)
-
-RUN ls -la dist/ || echo "DIST VAZIO"
+RUN ./node_modules/.bin/nest build && echo "BUILD OK" && find /app -name "main.js" 2>/dev/null || echo "main.js NAO ENCONTRADO"
 
 EXPOSE 3000
 

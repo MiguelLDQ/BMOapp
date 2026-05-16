@@ -123,3 +123,9 @@ enum ReportStatus {
   RESOLVED
   DISMISSED
 }
+model DailyTask {
+  id        String   @id @default(uuid())
+  title     String   @unique
+  category  String?
+  createdAt DateTime @default(now())
+}

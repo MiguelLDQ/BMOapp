@@ -12,7 +12,9 @@ COPY . .
 
 RUN npx prisma generate
 
-RUN npm run build && echo "BUILD OK" && ls -la dist/
+RUN npm run build
+
+RUN echo "=== verificando dist ===" && ls -la /app/dist/ && echo "=== main.js ===" && ls /app/dist/main.js
 
 EXPOSE 3000
 

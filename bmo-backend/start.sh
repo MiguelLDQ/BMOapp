@@ -8,4 +8,4 @@ echo "=== rodando prisma migrate ==="
 npx prisma migrate deploy 2>&1
 
 echo "=== subindo app ==="
-node dist/main 2>&1
+node /app/dist/main 2>&1

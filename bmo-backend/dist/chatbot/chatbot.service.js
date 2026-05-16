@@ -103,7 +103,7 @@ let ChatbotService = ChatbotService_1 = class ChatbotService {
                     'Authorization': `Bearer ${groqApiKey}`,
                 },
                 body: JSON.stringify({
-                    model: 'llama3-8b-8192',
+                    model: 'llama-3.1-8b-instant',
                     messages: [
                         { role: 'system', content: systemPrompt },
                         ...messages,
@@ -123,7 +123,7 @@ let ChatbotService = ChatbotService_1 = class ChatbotService {
             return {
                 reply: reply.trim(),
                 responseLength,
-                model: 'llama3-8b-8192',
+                model: 'llama-3.1-8b-instant',
                 tokensUsed: data?.usage?.total_tokens || null,
             };
         }
@@ -136,7 +136,7 @@ let ChatbotService = ChatbotService_1 = class ChatbotService {
         const groqApiKey = this.config.get('groq.apiKey');
         return {
             online: !!groqApiKey,
-            model: 'llama3-8b-8192',
+            model: 'llama-3.1-8b-instant',
             provider: 'Groq',
         };
     }

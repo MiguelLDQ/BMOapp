@@ -16,4 +16,6 @@ RUN ./node_modules/.bin/nest build && echo "BUILD OK" && find /app -name "main.j
 
 EXPOSE 3000
 
+RUN sed -i 's/\r//' start.sh && chmod +x start.sh
+
 CMD ["sh", "start.sh"]

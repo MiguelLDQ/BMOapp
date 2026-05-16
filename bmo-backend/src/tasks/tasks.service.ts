@@ -35,7 +35,7 @@ export class TasksService {
   }
 
   async update(userId: string, taskId: string, dto: UpdateTaskDto) {
-    await this.findOne(userId, taskId); // valida dono
+    await this.findOne(userId, taskId);
     return (this.prisma as any).task.update({
       where: { id: taskId },
       data: {
@@ -46,7 +46,7 @@ export class TasksService {
   }
 
   async remove(userId: string, taskId: string) {
-    await this.findOne(userId, taskId); // valida dono
+    await this.findOne(userId, taskId);
     await (this.prisma as any).task.delete({ where: { id: taskId } });
     return { message: 'Tarefa removida com sucesso' };
   }
@@ -59,5 +59,42 @@ export class TasksService {
       (this.prisma as any).task.count({ where: { userId, status: 'DONE' } }),
     ]);
     return { total, pending, inProgress, done };
+  }
+
+  async generateDaily(userId: string) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const existing = await (this.prisma as any).task.findMany({
+      where: {
+        userId,
+        createdAt: { gte: today, lt: tomorrow },
+        description: 'daily',
+      },
+    });
+
+    if (existing.length > 0) {
+      return existing;
+    }
+
+    const allDaily = await (this.prisma as any).dailyTask.findMany();
+    const shuffled = allDaily.sort(() => Math.random() - 0.5).slice(0, 6);
+
+    const created = await Promise.all(
+      shuffled.map((t: any) =>
+        (this.prisma as any).task.create({
+          data: {
+            userId,
+            title: t.title,
+            description: 'daily',
+            dueDate: tomorrow,
+          },
+        }),
+      ),
+    );
+
+    return created;
   }
 }

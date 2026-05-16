@@ -12,6 +12,12 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
+  @Post('daily')
+  async generateDaily(@CurrentUser('id') userId: string) {
+  const data = await this.tasksService.generateDaily(userId);
+  return { success: true, message: '6 tasks do dia geradas!', data };
+}
+
   @Post()
   async create(@CurrentUser('id') userId: string, @Body() dto: CreateTaskDto) {
     const data = await this.tasksService.create(userId, dto);

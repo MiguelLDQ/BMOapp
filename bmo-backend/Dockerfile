@@ -6,15 +6,15 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --include=dev
+RUN npm install
 
 COPY . .
 
 RUN npx prisma generate
 
-RUN npm run build
+RUN ./node_modules/.bin/nest build
 
-RUN echo "=== verificando dist ===" && ls -la /app/dist/ && echo "=== main.js ===" && ls /app/dist/main.js
+RUN echo "=== dist gerado ===" && ls -la /app/dist/
 
 EXPOSE 3000
 

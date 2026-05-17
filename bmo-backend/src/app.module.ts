@@ -12,6 +12,7 @@ import { MoodModule } from './mood/mood.module';
 import { ChatbotModule } from './chatbot/chatbot.module';
 import { ChatModule } from './chat/chat.module';
 import { AdminModule } from './admin/admin.module';
+import { EstrelasModule } from './estrelas/estrelas.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AdminModule } from './admin/admin.module';
     ChatbotModule,
     ChatModule,
     AdminModule,
+    EstrelasModule,
   ],
   controllers: [HealthController],
   providers: [

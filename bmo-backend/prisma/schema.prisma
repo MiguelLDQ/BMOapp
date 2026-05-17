@@ -129,3 +129,8 @@ model DailyTask {
   category  String?
   createdAt DateTime @default(now())
 }
+model EstrelasMensagem {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+}

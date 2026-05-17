@@ -11,6 +11,9 @@ declare const _default: () => {
     groq: {
         apiKey: string;
     };
+    cleanup: {
+        secret: string;
+    };
     firebase: {
         serviceAccount: string;
         databaseURL: string;

@@ -10,6 +10,8 @@ exports.ChatModule = void 0;
 const common_1 = require("@nestjs/common");
 const chat_service_1 = require("./chat.service");
 const chat_controller_1 = require("./chat.controller");
+const chat_cleanup_service_1 = require("./chat-cleanup.service");
+const chat_cleanup_controller_1 = require("./chat-cleanup.controller");
 const prisma_service_1 = require("../prisma.service");
 const firebase_service_1 = require("../firebase.service");
 let ChatModule = class ChatModule {
@@ -17,8 +19,8 @@ let ChatModule = class ChatModule {
 exports.ChatModule = ChatModule;
 exports.ChatModule = ChatModule = __decorate([
     (0, common_1.Module)({
-        controllers: [chat_controller_1.ChatController],
-        providers: [chat_service_1.ChatService, prisma_service_1.PrismaService, firebase_service_1.FirebaseService],
+        controllers: [chat_controller_1.ChatController, chat_cleanup_controller_1.ChatCleanupController],
+        providers: [chat_service_1.ChatService, chat_cleanup_service_1.ChatCleanupService, prisma_service_1.PrismaService, firebase_service_1.FirebaseService],
     })
 ], ChatModule);
 //# sourceMappingURL=chat.module.js.map

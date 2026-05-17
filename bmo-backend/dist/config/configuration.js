@@ -13,6 +13,9 @@ exports.default = () => ({
     groq: {
         apiKey: process.env.GROQ_API_KEY || '',
     },
+    cleanup: {
+        secret: process.env.CLEANUP_SECRET || 'bmo-cleanup-secret',
+    },
     firebase: {
         serviceAccount: process.env.FIREBASE_SERVICE_ACCOUNT || '',
         databaseURL: process.env.FIREBASE_DATABASE_URL || '',

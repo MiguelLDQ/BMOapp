@@ -2,6 +2,7 @@ import { PrismaService } from '../prisma.service';
 import { CreateTaskDto, UpdateTaskDto } from './tasks.dto';
 export declare class TasksService {
     private prisma;
+    private readonly logger;
     constructor(prisma: PrismaService);
     create(userId: string, dto: CreateTaskDto): Promise<any>;
     findAll(userId: string, status?: string): Promise<any>;

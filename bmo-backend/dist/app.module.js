@@ -24,6 +24,7 @@ const mood_module_1 = require("./mood/mood.module");
 const chatbot_module_1 = require("./chatbot/chatbot.module");
 const chat_module_1 = require("./chat/chat.module");
 const admin_module_1 = require("./admin/admin.module");
+const estrelas_module_1 = require("./estrelas/estrelas.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -38,6 +39,7 @@ exports.AppModule = AppModule = __decorate([
             chatbot_module_1.ChatbotModule,
             chat_module_1.ChatModule,
             admin_module_1.AdminModule,
+            estrelas_module_1.EstrelasModule,
         ],
         controllers: [health_controller_1.HealthController],
         providers: [

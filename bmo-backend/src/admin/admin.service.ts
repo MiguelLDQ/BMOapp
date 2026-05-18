@@ -35,13 +35,11 @@ export class AdminService {
     const user = await (this.prisma as any).user.findUnique({ where: { id: targetUserId } });
     if (!user) throw new NotFoundException('Usuário não encontrado');
 
-    // Bane no PostgreSQL
     await (this.prisma as any).user.update({
       where: { id: targetUserId },
       data: { isBanned: true, banReason: dto.reason },
     });
 
-    // Bane no Firebase (app reage em tempo real)
     await this.firebase.banUser(targetUserId, dto.reason);
 
     return { message: `Usuário ${user.name} banido com sucesso` };
@@ -110,32 +108,33 @@ export class AdminService {
     });
     if (!message) throw new NotFoundException('Mensagem não encontrada');
 
-    // Marca como deletada no PostgreSQL
     await (this.prisma as any).message.update({
       where: { id: messageId },
       data: { isDeleted: true, deletedAt: new Date() },
     });
 
-    // Remove do Firebase (tempo real)
     await this.firebase.deleteMessage(message.roomId, messageId);
 
     return { message: 'Mensagem removida com sucesso' };
   }
+
+  // ─── SALAS ───────────────────────────────────────────────
+
   async deleteRoom(roomId: string) {
-  const room = await (this.prisma as any).chatRoom.findUnique({
-    where: { id: roomId },
-  });
-  if (!room) throw new NotFoundException('Sala não encontrada');
+    const room = await (this.prisma as any).chatRoom.findUnique({
+      where: { id: roomId },
+    });
+    if (!room) throw new NotFoundException('Sala não encontrada');
 
-  await (this.prisma as any).chatRoom.delete({ where: { id: roomId } });
+    await (this.prisma as any).chatRoom.delete({ where: { id: roomId } });
 
-  // Remove do Firebase também
-  if (this.firebase.isAvailable()) {
-    await (this.firebase as any).db.ref(`rooms/${roomId}`).remove();
+    try {
+      await (this.firebase as any).db.ref(`rooms/${roomId}`).remove();
+    } catch (e) {}
+
+    return { message: 'Sala removida com sucesso' };
   }
 
-  return { message: 'Sala removida com sucesso' };
-}
   // ─── DASHBOARD ───────────────────────────────────────────
 
   async getDashboard() {

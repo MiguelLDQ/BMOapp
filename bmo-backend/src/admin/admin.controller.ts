@@ -66,4 +66,9 @@ export class AdminController {
     const data = await this.adminService.deleteMessage(messageId);
     return { success: true, ...data };
   }
+  @Delete('rooms/:roomId')
+async deleteRoom(@Param('roomId') roomId: string) {
+  const data = await this.adminService.deleteRoom(roomId);
+  return { success: true, ...data };
+}
 }

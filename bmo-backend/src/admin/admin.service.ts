@@ -121,7 +121,21 @@ export class AdminService {
 
     return { message: 'Mensagem removida com sucesso' };
   }
+  async deleteRoom(roomId: string) {
+  const room = await (this.prisma as any).chatRoom.findUnique({
+    where: { id: roomId },
+  });
+  if (!room) throw new NotFoundException('Sala não encontrada');
 
+  await (this.prisma as any).chatRoom.delete({ where: { id: roomId } });
+
+  // Remove do Firebase também
+  if (this.firebase.isAvailable()) {
+    await (this.firebase as any).db.ref(`rooms/${roomId}`).remove();
+  }
+
+  return { message: 'Sala removida com sucesso' };
+}
   // ─── DASHBOARD ───────────────────────────────────────────
 
   async getDashboard() {

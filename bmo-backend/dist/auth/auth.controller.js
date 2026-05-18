@@ -16,6 +16,7 @@ exports.AuthController = void 0;
 const common_1 = require("@nestjs/common");
 const auth_service_1 = require("./auth.service");
 const auth_dto_1 = require("./auth.dto");
+const jwt_auth_guard_1 = require("../common/guards/jwt-auth.guard");
 let AuthController = class AuthController {
     authService;
     constructor(authService) {
@@ -23,19 +24,14 @@ let AuthController = class AuthController {
     }
     async register(dto) {
         const result = await this.authService.register(dto);
-        return {
-            success: true,
-            message: 'Cadastro realizado com sucesso',
-            data: result,
-        };
+        return { success: true, message: 'Cadastro realizado com sucesso', data: result };
     }
     async login(dto) {
         const result = await this.authService.login(dto);
-        return {
-            success: true,
-            message: 'Login realizado com sucesso',
-            data: result,
-        };
+        return { success: true, message: 'Login realizado com sucesso', data: result };
+    }
+    async getMe(req) {
+        return { success: true, data: req.user };
     }
 };
 exports.AuthController = AuthController;
@@ -54,6 +50,14 @@ __decorate([
     __metadata("design:paramtypes", [auth_dto_1.LoginDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
+__decorate([
+    (0, common_1.Get)('me'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Request)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getMe", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

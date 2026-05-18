@@ -25,4 +25,8 @@ export declare class AuthController {
             token: string;
         };
     }>;
+    getMe(req: any): Promise<{
+        success: boolean;
+        data: any;
+    }>;
 }

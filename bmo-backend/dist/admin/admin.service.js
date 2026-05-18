@@ -107,6 +107,18 @@ let AdminService = class AdminService {
         await this.firebase.deleteMessage(message.roomId, messageId);
         return { message: 'Mensagem removida com sucesso' };
     }
+    async deleteRoom(roomId) {
+        const room = await this.prisma.chatRoom.findUnique({
+            where: { id: roomId },
+        });
+        if (!room)
+            throw new common_1.NotFoundException('Sala não encontrada');
+        await this.prisma.chatRoom.delete({ where: { id: roomId } });
+        if (this.firebase.isAvailable()) {
+            await this.firebase.db.ref(`rooms/${roomId}`).remove();
+        }
+        return { message: 'Sala removida com sucesso' };
+    }
     async getDashboard() {
         const [totalUsers, bannedUsers, pendingReports, totalMessages] = await Promise.all([
             this.prisma.user.count(),

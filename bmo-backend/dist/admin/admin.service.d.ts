@@ -22,6 +22,9 @@ export declare class AdminService {
     deleteMessage(messageId: string): Promise<{
         message: string;
     }>;
+    deleteRoom(roomId: string): Promise<{
+        message: string;
+    }>;
     getDashboard(): Promise<{
         totalUsers: any;
         bannedUsers: any;

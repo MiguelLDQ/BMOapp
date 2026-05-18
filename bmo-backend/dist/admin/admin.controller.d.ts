@@ -40,4 +40,8 @@ export declare class AdminController {
         message: string;
         success: boolean;
     }>;
+    deleteRoom(roomId: string): Promise<{
+        message: string;
+        success: boolean;
+    }>;
 }

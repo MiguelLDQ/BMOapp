@@ -55,6 +55,10 @@ let AdminController = class AdminController {
         const data = await this.adminService.deleteMessage(messageId);
         return { success: true, ...data };
     }
+    async deleteRoom(roomId) {
+        const data = await this.adminService.deleteRoom(roomId);
+        return { success: true, ...data };
+    }
 };
 exports.AdminController = AdminController;
 __decorate([
@@ -114,6 +118,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], AdminController.prototype, "deleteMessage", null);
+__decorate([
+    (0, common_1.Delete)('rooms/:roomId'),
+    __param(0, (0, common_1.Param)('roomId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AdminController.prototype, "deleteRoom", null);
 exports.AdminController = AdminController = __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, admin_guard_1.AdminGuard),
     (0, common_1.Controller)('admin'),

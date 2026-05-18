@@ -16,34 +16,36 @@ export class AuthService {
   ) {}
 
   async register(dto: RegisterDto) {
-  try {
-    const exists = await (this.prisma as any).user.findUnique({ where: { email: dto.email } });
-    if (exists) throw new ConflictException('Email já cadastrado');
+    try {
+      const exists = await (this.prisma as any).user.findUnique({ where: { email: dto.email } });
+      if (exists) throw new ConflictException('Email já cadastrado');
 
-    const hashed = await bcrypt.hash(dto.password, 10);
-    const user = await (this.prisma as any).user.create({
-      data: { name: dto.name, email: dto.email, password: hashed, bio: dto.bio },
-      select: { id: true, name: true, email: true, createdAt: true },
-    });
+      const hashed = await bcrypt.hash(dto.password, 10);
+      const user = await (this.prisma as any).user.create({
+        data: { name: dto.name, email: dto.email, password: hashed, bio: dto.bio },
+        select: { id: true, name: true, email: true, role: true, createdAt: true },
+      });
 
-    const token = this.jwt.sign({ sub: user.id, email: user.email });
-    return { user, token };
-  } catch (error) {
-    console.error('REGISTER ERROR:', error);
-    throw error;
+      const token = this.jwt.sign({ sub: user.id, email: user.email });
+      return { user, token };
+    } catch (error) {
+      console.error('REGISTER ERROR:', error);
+      throw error;
+    }
   }
-}
 
   async login(dto: LoginDto) {
     const user = await (this.prisma as any).user.findUnique({ where: { email: dto.email } });
     if (!user) throw new UnauthorizedException('Credenciais inválidas');
+
+    if (user.isBanned) throw new UnauthorizedException('Conta suspensa: ' + (user.banReason || 'contate o suporte'));
 
     const valid = await bcrypt.compare(dto.password, user.password);
     if (!valid) throw new UnauthorizedException('Credenciais inválidas');
 
     const token = this.jwt.sign({ sub: user.id, email: user.email });
     return {
-      user: { id: user.id, name: user.name, email: user.email, avatar: user.avatar },
+      user: { id: user.id, name: user.name, email: user.email, avatar: user.avatar, role: user.role },
       token,
     };
   }

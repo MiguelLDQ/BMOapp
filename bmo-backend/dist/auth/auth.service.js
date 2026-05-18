@@ -62,7 +62,7 @@ let AuthService = class AuthService {
             const hashed = await bcrypt.hash(dto.password, 10);
             const user = await this.prisma.user.create({
                 data: { name: dto.name, email: dto.email, password: hashed, bio: dto.bio },
-                select: { id: true, name: true, email: true, createdAt: true },
+                select: { id: true, name: true, email: true, role: true, createdAt: true },
             });
             const token = this.jwt.sign({ sub: user.id, email: user.email });
             return { user, token };
@@ -76,12 +76,14 @@ let AuthService = class AuthService {
         const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
         if (!user)
             throw new common_1.UnauthorizedException('Credenciais inválidas');
+        if (user.isBanned)
+            throw new common_1.UnauthorizedException('Conta suspensa: ' + (user.banReason || 'contate o suporte'));
         const valid = await bcrypt.compare(dto.password, user.password);
         if (!valid)
             throw new common_1.UnauthorizedException('Credenciais inválidas');
         const token = this.jwt.sign({ sub: user.id, email: user.email });
         return {
-            user: { id: user.id, name: user.name, email: user.email, avatar: user.avatar },
+            user: { id: user.id, name: user.name, email: user.email, avatar: user.avatar, role: user.role },
             token,
         };
     }

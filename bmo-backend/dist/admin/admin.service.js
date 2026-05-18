@@ -114,9 +114,10 @@ let AdminService = class AdminService {
         if (!room)
             throw new common_1.NotFoundException('Sala não encontrada');
         await this.prisma.chatRoom.delete({ where: { id: roomId } });
-        if (this.firebase.isAvailable()) {
+        try {
             await this.firebase.db.ref(`rooms/${roomId}`).remove();
         }
+        catch (e) { }
         return { message: 'Sala removida com sucesso' };
     }
     async getDashboard() {

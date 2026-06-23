@@ -1,5 +1,5 @@
 import {
-  Controller, Get, Post, Patch, Delete,
+  Controller, Get, Post, Patch, Put, Delete,
   Body, Param, Query, UseGuards,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
@@ -53,6 +53,18 @@ export class TasksController {
   ) {
     const data = await this.tasksService.update(userId, id, dto);
     return { success: true, message: 'Tarefa atualizada', data };
+  }
+
+  // Rota extra só pra compatibilidade com o componente Web do MIT App Inventor,
+  // que não tem método PATCH (só Get, PostText, PutText, Delete).
+  // Faz exatamente a mesma coisa que o PATCH acima.
+  @Put(':id')
+  async updatePut(
+    @CurrentUser('id') userId: string,
+    @Param('id') id: string,
+    @Body() dto: UpdateTaskDto,
+  ) {
+    return this.update(userId, id, dto);
   }
 
   @Delete(':id')

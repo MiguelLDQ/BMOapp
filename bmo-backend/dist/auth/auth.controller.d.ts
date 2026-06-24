@@ -29,4 +29,11 @@ export declare class AuthController {
         success: boolean;
         data: any;
     }>;
+    updateMe(req: any, body: {
+        name: string;
+    }): Promise<{
+        success: boolean;
+        message: string;
+        data: any;
+    }>;
 }

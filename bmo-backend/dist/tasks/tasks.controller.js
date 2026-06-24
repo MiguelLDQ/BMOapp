@@ -47,6 +47,9 @@ let TasksController = class TasksController {
         const data = await this.tasksService.update(userId, id, dto);
         return { success: true, message: 'Tarefa atualizada', data };
     }
+    async updatePut(userId, id, dto) {
+        return this.update(userId, id, dto);
+    }
     async remove(userId, id) {
         const data = await this.tasksService.remove(userId, id);
         return { success: true, ...data };
@@ -100,6 +103,15 @@ __decorate([
     __metadata("design:paramtypes", [String, String, tasks_dto_1.UpdateTaskDto]),
     __metadata("design:returntype", Promise)
 ], TasksController.prototype, "update", null);
+__decorate([
+    (0, common_1.Put)(':id'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)('id')),
+    __param(1, (0, common_1.Param)('id')),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, tasks_dto_1.UpdateTaskDto]),
+    __metadata("design:returntype", Promise)
+], TasksController.prototype, "updatePut", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     __param(0, (0, current_user_decorator_1.CurrentUser)('id')),

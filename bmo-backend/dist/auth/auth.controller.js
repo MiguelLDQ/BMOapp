@@ -33,6 +33,10 @@ let AuthController = class AuthController {
     async getMe(req) {
         return { success: true, data: req.user };
     }
+    async updateMe(req, body) {
+        const data = await this.authService.updateMe(req.user.id, body);
+        return { success: true, message: 'Perfil atualizado!', data };
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -58,6 +62,15 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "getMe", null);
+__decorate([
+    (0, common_1.Patch)('me'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    __param(0, (0, common_1.Request)()),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "updateMe", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService])

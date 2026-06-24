@@ -35,6 +35,11 @@ export declare class TasksController {
         message: string;
         data: any;
     }>;
+    updatePut(userId: string, id: string, dto: UpdateTaskDto): Promise<{
+        success: boolean;
+        message: string;
+        data: any;
+    }>;
     remove(userId: string, id: string): Promise<{
         message: string;
         success: boolean;

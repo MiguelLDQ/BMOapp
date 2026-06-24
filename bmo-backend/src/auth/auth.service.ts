@@ -49,4 +49,13 @@ export class AuthService {
       token,
     };
   }
+
+  async updateMe(userId: string, dto: { name: string }) {
+    const user = await (this.prisma as any).user.update({
+      where: { id: userId },
+      data: { name: dto.name },
+      select: { id: true, name: true, email: true, role: true },
+    });
+    return user;
+  }
 }

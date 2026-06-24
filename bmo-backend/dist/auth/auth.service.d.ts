@@ -19,4 +19,7 @@ export declare class AuthService {
         };
         token: string;
     }>;
+    updateMe(userId: string, dto: {
+        name: string;
+    }): Promise<any>;
 }
